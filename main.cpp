@@ -28,13 +28,11 @@ int main()
             }
             else if(event.type == sf::Event::MouseButtonPressed)
             {
-                if (event.mouseButton.button == sf::Mouse::Left)
-                    gol.press(event.mouseButton.x, event.mouseButton.y);
+                gol.press(event.mouseButton.x, event.mouseButton.y, event.mouseButton.button);
             }
             else if(event.type == sf::Event::MouseButtonReleased)
             {
-                if (event.mouseButton.button == sf::Mouse::Left)
-                    gol.unpress();
+                gol.unpress(event.mouseButton.button);
             }
             else if (event.type == sf::Event::MouseMoved)
             {

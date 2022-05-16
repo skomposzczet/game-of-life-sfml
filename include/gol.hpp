@@ -5,6 +5,8 @@
 #include <vector>
 #include <iostream> // debug
 
+enum class selection{none, kill, populate};
+
 class Cell: public sf::Drawable
 {
 public:
@@ -25,27 +27,39 @@ public:
         target.draw(_rect);
     }
 
-    void select()
+    void select(selection& s)
     {
-        _selected = true;
-        _rect.setFillColor(sf::Color::Blue);
+        _selected = s;
+
+        if (_selected == selection::populate)
+            _rect.setFillColor(sf::Color::Blue);
+        else if (_selected == selection::kill)
+            _rect.setFillColor(sf::Color::Red);
     }
 
     void deselect()
     {
-        if (_selected)
+        if (_selected != selection::none)
         {
-            _selected = false;
+            _selected = selection::none;
             _rect.setFillColor((alive ? sf::Color::Green : sf::Color::White));
         }
     }
 
     void apply()
     {
-        if (_selected)
+        if (_selected != selection::none)
         {
-            alive = true;
-            _rect.setFillColor(sf::Color::Green);
+            if (_selected == selection::populate)
+            {
+                alive = true;
+                _rect.setFillColor(sf::Color::Green);
+            }
+            else if (_selected == selection::kill)
+            {
+                alive = false;
+                _rect.setFillColor(sf::Color::White);
+            }
         }
     }
 
@@ -53,7 +67,7 @@ private:
     sf::RectangleShape _rect;
     bool alive = false;
 
-    bool _selected = false;
+    selection _selected = selection::none;
 
     static sf::Vector2i get_position(const int i, const int j)
     {
@@ -89,28 +103,34 @@ public:
                 target.draw(_matrix.at(i).at(j));
     }
 
-    void press(const int x, const int y)
+    void press(const int x, const int y, sf::Mouse::Button button)
     {
-        _pressed = true;
+        if(_selecting != selection::none)
+            return;
+
+        _selecting = (button == sf::Mouse::Left ? selection::populate : selection::kill);
         _begin.x = _end.x = x / Cell::size;
         _begin.y = _end.y = y / Cell::size;
-        _matrix.at(_begin.y).at(_begin.x).select();
+        _matrix.at(_begin.y).at(_begin.x).select(_selecting);
     }
 
-    void unpress()
+    void unpress(sf::Mouse::Button button)
     {
-        for (unsigned i = 0 ; i < _height ; ++i)
-            for (unsigned j = 0 ; j < _width ; ++j)
-                _matrix.at(i).at(j).apply();
+        if (_selecting == selection::populate && button == sf::Mouse::Left || _selecting == selection::kill && button == sf::Mouse::Right)
+        {
+            for (unsigned i = 0 ; i < _height ; ++i)
+                for (unsigned j = 0 ; j < _width ; ++j)
+                    _matrix.at(i).at(j).apply();
 
-        _pressed = false;
-        _begin.x = _end.x = -1;
-        _begin.y = _end.y = -1;
+            _selecting = selection::none;
+            _begin.x = _end.x = -1;
+            _begin.y = _end.y = -1;
+        }
     }
 
     bool pressed() const
     {
-        return _pressed;
+        return (_selecting == selection::none ? false : true);
     }
 
     void move_mouse(const int x, const int y)
@@ -121,7 +141,7 @@ public:
         for (unsigned i = 0 ; i < _height ; ++i)
             for (unsigned j = 0 ; j < _width ; ++j)
                 if (((i >= _begin.y && i <= _end.y) || (i <= _begin.y && i >= _end.y)) && ((j >= _begin.x && j <= _end.x) || (j <= _begin.x && j >= _end.x)))
-                    _matrix.at(i).at(j).select();
+                    _matrix.at(i).at(j).select(_selecting);
                 else
                     _matrix.at(i).at(j).deselect();
     }
@@ -131,7 +151,7 @@ private:
     const int _width;
     std::vector<std::vector<Cell>> _matrix;
 
-    bool _pressed = false;
+    selection _selecting = selection::none;
     sf::Vector2i _begin{-1,-1};
     sf::Vector2i _end{-1,-1};
 };
