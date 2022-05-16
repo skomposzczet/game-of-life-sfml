@@ -1,6 +1,8 @@
 #include <SFML/Window.hpp>
 #include <SFML/Graphics.hpp>
 
+#include <ctime>
+
 #include "gol.hpp"
 
 int main()
@@ -10,6 +12,12 @@ int main()
     sf::Event event;
     window.setFramerateLimit(30);
     sf::Color color = sf::Color::Black;
+
+    double time_counter = 0;
+
+    bool running = false;
+    clock_t this_time;
+    clock_t last_time;
 
     GameOfLife gol(1290, 900);
 
@@ -25,8 +33,19 @@ int main()
             {
                 if (event.key.code == sf::Keyboard::Escape)
                     window.close();
-                else if (event.key.code == sf::Keyboard::Enter)
+                else if (event.key.code == sf::Keyboard::Space)
                     gol.evolve();
+                else if (event.key.code == sf::Keyboard::Enter)
+                {
+                    if (!running)
+                    {
+                        running = true;
+                        this_time = clock();
+                        last_time = this_time;
+                    }
+                    else
+                        running = false;
+                }
             }
             else if(event.type == sf::Event::MouseButtonPressed)
             {
@@ -40,6 +59,20 @@ int main()
             {
                 if (gol.pressed())
                     gol.move_mouse(event.mouseMove.x, event.mouseMove.y);
+            }
+        }
+
+        if (running)
+        {
+            this_time = clock();
+            time_counter += static_cast<double>(this_time - last_time);
+            last_time = this_time;
+
+            if(time_counter > .5 * CLOCKS_PER_SEC)
+            {
+                time_counter -= .5 * CLOCKS_PER_SEC;
+                if (gol.evolve())
+                    running = false;
             }
         }
 
