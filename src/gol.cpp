@@ -83,7 +83,7 @@ bool GameOfLife::evolve()
         return true;
 
     _matrix.swap(nm);
-    if (anyone_left())
+    if (!anyone_left())
         return true;
 
     return false;
