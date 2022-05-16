@@ -4,11 +4,12 @@
 #include <SFML/Graphics.hpp>
 #include <vector>
 
-class Cell: sf::Drawable
+class Cell: public sf::Drawable
 {
 public:
     Cell(const int i, const int j)
     {
+        _rect.setSize(sf::Vector2f(static_cast<float>(Cell::isize), static_cast<float>(Cell::isize)));
         _rect.setFillColor(sf::Color::White);
         _rect.setOutlineColor(sf::Color::Black);
         _rect.setOutlineThickness(1.f);
@@ -19,7 +20,9 @@ public:
     enum {size = 15, isize = 14, bsize = 1};
 
     void draw(sf::RenderTarget& target, sf::RenderStates states) const override
-    {}
+    {
+        target.draw(_rect);
+    }
 
 private:
     sf::RectangleShape _rect;
@@ -35,7 +38,7 @@ class GameOfLife: public sf::Drawable
 {
 public:
     GameOfLife(const int x, const int y)
-        : _width{x/Cell::size}, _height{Cell::size}
+        : _width{x/Cell::size}, _height{y/Cell::size}
     {
 
         _matrix.reserve(_height);
@@ -50,6 +53,13 @@ public:
 
             _matrix.push_back(temp);
         }
+    }
+
+    void draw(sf::RenderTarget& target, sf::RenderStates states) const override
+    {
+        for (unsigned i = 0 ; i < _height ; ++i)
+            for (unsigned j = 0 ; j < _width ; ++j)
+                target.draw(_matrix.at(i).at(j));
     }
 
 private:
