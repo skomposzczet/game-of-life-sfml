@@ -5,6 +5,7 @@
 #include <vector>
 #include <filesystem>
 #include <fstream>
+#include <string>
 #include <iostream> // debug
 
 #include "cell.hpp"
@@ -74,6 +75,11 @@ public:
      * @brief Exports grid layout to file
      */
     void export_layout() const;
+
+    /**
+     * @brief Import grid layout from file
+     */
+    bool import_layout(const std::string filename);
 
 private:
     const int _height;

@@ -5,7 +5,13 @@
 
 #include "gol.hpp"
 
-int main()
+void start(bool& r, clock_t& tt, clock_t& lt)
+{
+    r = true;
+    lt = tt = clock();
+}
+
+int main(int argc, char *argv[])
 {
     sf::RenderWindow window(sf::VideoMode(1290, 900), "GAME OF LIFE", sf::Style::Titlebar | sf::Style::Close);
     window.setPosition(sf::Vector2i(10, 10));
@@ -21,6 +27,11 @@ int main()
     clock_t last_time;
 
     GameOfLife gol(1290, 900);
+    if(argc > 1)
+    {
+        gol.import_layout(static_cast<std::string>(argv[1]));
+        start(running, this_time, last_time);
+    }
 
     while (window.isOpen())
     {
@@ -44,11 +55,7 @@ int main()
                 else if (event.key.code == sf::Keyboard::Enter)
                 {
                     if (!running)
-                    {
-                        running = true;
-                        this_time = clock();
-                        last_time = this_time;
-                    }
+                        start(running, this_time, last_time);
                     else
                         running = false;
                 }

@@ -164,3 +164,31 @@ void GameOfLife::export_layout() const
                     file << i << ' ' << j << "\n";
     }
 }
+
+bool GameOfLife::import_layout(const std::string filename)
+{
+    std::filesystem::path filepath = filename;
+    std::ifstream file;
+    file.open(filepath.string());
+    if (!file.is_open())
+    {
+        filepath = std::filesystem::current_path() / filename;
+        file.open(filepath.string());
+        if (!file.is_open())
+        {
+            std::cerr << "Couldnt find file\n";
+            return false;
+        }
+    }
+
+    clear();
+    for (std::string line ; getline(file, line) ; )
+    {
+        int i = stoi(line.substr(0, line.find_first_of(' ')));
+        int j = stoi(line.substr(line.find_first_of(' ')+1, line.length()));
+
+        _matrix.at(i).at(j).populate();
+    }
+
+    return true;
+}
