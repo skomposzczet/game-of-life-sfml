@@ -3,6 +3,7 @@
 
 #include <SFML/Graphics.hpp>
 #include <vector>
+#include <iostream> // debug
 
 class Cell: public sf::Drawable
 {
@@ -62,10 +63,41 @@ public:
                 target.draw(_matrix.at(i).at(j));
     }
 
+    void press(const int x, const int y)
+    {
+        std::cout << "pressed\n";
+        _pressed = true;
+        _begin.x = _end.x = x / Cell::size;
+        _begin.y = _end.y = y / Cell::size;
+    }
+
+    void unpress()
+    {
+        std::cout << _begin.x << ", " << _begin.y << "\t" << _end.x << ", " << _end.y << "\n";
+        _pressed = false;
+        _begin.x = _end.x = -1;
+        _begin.y = _end.y = -1;
+    }
+
+    bool pressed() const
+    {
+        return _pressed;
+    }
+
+    void move_mouse(const int x, const int y)
+    {
+        _end.x = x / Cell::size;
+        _end.y = y / Cell::size;
+    }
+
 private:
     const int _height;
     const int _width;
     std::vector<std::vector<Cell>> _matrix;
+
+    bool _pressed = false;
+    sf::Vector2i _begin{-1,-1};
+    sf::Vector2i _end{-1,-1};
 };
 
 #endif // GOL_H

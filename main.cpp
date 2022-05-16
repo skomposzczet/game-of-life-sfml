@@ -1,6 +1,8 @@
 #include <SFML/Window.hpp>
 #include <SFML/Graphics.hpp>
 
+#include "gol.hpp"
+
 int main()
 {
     sf::RenderWindow window(sf::VideoMode(1290, 900), "GAME OF LIFE", sf::Style::Titlebar | sf::Style::Close);
@@ -8,6 +10,8 @@ int main()
     sf::Event event;
     window.setFramerateLimit(30);
     sf::Color color = sf::Color::Black;
+
+    GameOfLife gol(1290, 900);
 
     while (window.isOpen())
     {
@@ -22,8 +26,24 @@ int main()
                 if (event.key.code == sf::Keyboard::Escape)
                     window.close();
             }
+            else if(event.type == sf::Event::MouseButtonPressed)
+            {
+                if (event.mouseButton.button == sf::Mouse::Left)
+                    gol.press(event.mouseButton.x, event.mouseButton.y);
+            }
+            else if(event.type == sf::Event::MouseButtonReleased)
+            {
+                if (event.mouseButton.button == sf::Mouse::Left)
+                    gol.unpress();
+            }
+            else if (event.type == sf::Event::MouseMoved)
+            {
+                if (gol.pressed())
+                    gol.move_mouse(event.mouseMove.x, event.mouseMove.y);
+            }
         }
 
+        window.draw(gol);
         window.display();
     }
 }
