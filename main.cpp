@@ -13,10 +13,10 @@ int main()
     window.setFramerateLimit(30);
     sf::Color color = sf::Color::Black;
 
+    // to measure time
+    bool running = false;
     double time_counter = 0;
     double interval = .5;
-
-    bool running = false;
     clock_t this_time;
     clock_t last_time;
 
@@ -28,14 +28,19 @@ int main()
         
         while (window.pollEvent(event))
         {
+            // closing window
             if (event.type == sf::Event::Closed) 
                 window.close();
             else if (event.type == sf::Event::KeyPressed)
             {
                 if (event.key.code == sf::Keyboard::Escape)
                     window.close();
+
+                // single iteration
                 else if (event.key.code == sf::Keyboard::Space)
                     gol.evolve();
+
+                // continous simulation
                 else if (event.key.code == sf::Keyboard::Enter)
                 {
                     if (!running)
@@ -47,24 +52,34 @@ int main()
                     else
                         running = false;
                 }
+
+                // speeds up simulation
                 else if (event.key.code == sf::Keyboard::RBracket)
                     interval /= 2;
+
+                // slows down simulation
                 else if (event.key.code == sf::Keyboard::LBracket)
                     interval *= 2;
+
+                // resets grid (and simulation)
                 else if (event.key.code == sf::Keyboard::R)
                 {
                     running = false;
                     gol.clear();
                 }
             }
+            
+            /// start selecting
             else if(event.type == sf::Event::MouseButtonPressed)
             {
                 gol.press(event.mouseButton.x, event.mouseButton.y, event.mouseButton.button);
             }
+            // end selecting
             else if(event.type == sf::Event::MouseButtonReleased)
             {
                 gol.unpress(event.mouseButton.button);
             }
+            // move mouse while selecting
             else if (event.type == sf::Event::MouseMoved)
             {
                 if (gol.pressed())
@@ -72,6 +87,7 @@ int main()
             }
         }
 
+        // next iteration is called if simulation in on
         if (running)
         {
             this_time = clock();
@@ -86,6 +102,7 @@ int main()
             }
         }
 
+        // drawing grid
         window.draw(gol);
         window.display();
     }

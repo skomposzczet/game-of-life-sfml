@@ -10,7 +10,7 @@ Cell::Cell(const int i, const int j, bool alive)
         _rect.setFillColor(sf::Color::White);
 
     _rect.setOutlineColor(sf::Color::Black);
-    _rect.setOutlineThickness(1.f);
+    _rect.setOutlineThickness(static_cast<float>(Cell::bsize));
 
     auto position = get_position(i, j);
     _rect.setPosition(position.x, position.y);
