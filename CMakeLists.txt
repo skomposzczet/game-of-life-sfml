@@ -31,3 +31,6 @@ target_link_libraries(${PROJECT_NAME} Map
 )
 
 add_custom_target(run ./${PROJECT_NAME})
+
+install(TARGETS ${PROJECT_NAME} DESTINATION games)
+install(DIRECTORY presets DESTINATION $ENV{HOME}/.game_of_life PATTEN "presets/*")
