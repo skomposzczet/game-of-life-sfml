@@ -40,10 +40,7 @@ void Cell::apply()
     if (_selected != selection::none)
     {
         if (_selected == selection::populate)
-        {
-            _alive = true;
-            _rect.setFillColor(sf::Color::Green);
-        }
+            populate();
         else if (_selected == selection::kill)
             kill();
     }

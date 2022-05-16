@@ -103,6 +103,12 @@ public:
         _rect.setFillColor(sf::Color::White);
     }
 
+    void populate()
+    {
+        _alive = true;
+        _rect.setFillColor(sf::Color::Green);
+    }
+
 private:
     sf::RectangleShape _rect;
     bool _alive;
