@@ -27,8 +27,6 @@ public:
 
     bool evolve();
 
-    bool anyone_left() const;
-
     void clear();
 
 private:
@@ -43,6 +41,8 @@ private:
     Cell get_cell(const int i, const int j) const;
 
     int count_neighbours(const int i, const int j) const;
+
+    bool anyone_left() const;
 };
 
 #endif // GOL_H
