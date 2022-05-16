@@ -200,7 +200,8 @@ bool GameOfLife::import_layout(std::string filename)
         int i = stoi(line.substr(0, line.find_first_of(' ')));
         int j = stoi(line.substr(line.find_first_of(' ')+1, line.length()));
 
-        _matrix.at(i).at(j).populate();
+        if (i < _height && i >= 0 && j < _width && j >= 0)
+            _matrix.at(i).at(j).populate();
     }
 
     return true;
