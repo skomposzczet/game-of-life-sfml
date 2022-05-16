@@ -12,6 +12,11 @@ public:
 
     Cell(const int i, const int j, bool alive = false);
 
+    bool operator==(const Cell& c) const
+    {
+        return _alive == c._alive;
+    }
+
     void draw(sf::RenderTarget& target, sf::RenderStates states) const override
     {
         target.draw(_rect);
