@@ -14,6 +14,7 @@ int main()
     sf::Color color = sf::Color::Black;
 
     double time_counter = 0;
+    double interval = .5;
 
     bool running = false;
     clock_t this_time;
@@ -46,6 +47,10 @@ int main()
                     else
                         running = false;
                 }
+                else if (event.key.code == sf::Keyboard::RBracket)
+                    interval /= 2;
+                else if (event.key.code == sf::Keyboard::LBracket)
+                    interval *= 2;
             }
             else if(event.type == sf::Event::MouseButtonPressed)
             {
@@ -68,9 +73,9 @@ int main()
             time_counter += static_cast<double>(this_time - last_time);
             last_time = this_time;
 
-            if(time_counter > .5 * CLOCKS_PER_SEC)
+            if(time_counter > interval * CLOCKS_PER_SEC)
             {
-                time_counter -= .5 * CLOCKS_PER_SEC;
+                time_counter -= interval * CLOCKS_PER_SEC;
                 if (gol.evolve())
                     running = false;
             }
