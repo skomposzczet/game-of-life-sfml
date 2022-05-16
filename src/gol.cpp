@@ -62,3 +62,68 @@ void GameOfLife::move_mouse(const int x, const int y)
             else
                 _matrix.at(i).at(j).deselect();
 }
+
+void GameOfLife::evolve()
+{
+    std::vector<std::vector<Cell>> nm;
+    nm.reserve(_height);
+
+    for (unsigned i = 0 ; i < _height ; ++i)
+    {
+        std::vector<Cell> temp;
+        temp.reserve(_width);
+
+        for (unsigned j = 0 ; j < _width ; ++j)
+            temp.emplace_back(get_cell(i, j));
+
+        nm.push_back(temp);
+    }
+
+    _matrix.swap(nm);
+}
+
+Cell GameOfLife::get_cell(const int i, const int j) const
+{
+    int n = count_neighbours(i, j);
+    const Cell& c = _matrix.at(i).at(j);
+
+    if ((c.is_dead() && n == 3) || (c.is_alive() && (n == 2 || n == 3)))
+        return Cell(i, j, true);
+    else
+        return Cell(i, j);
+
+}
+
+int GameOfLife::count_neighbours(const int i, const int j) const
+{
+    int result = 0;
+
+    for (int di = -1 ; di < 2 ; ++di)
+    {
+        int index;
+        if (i+di >= _height)
+            index = 0;
+        else if (i+di < 0)
+            index = _height-1;
+        else
+            index = i+di;
+
+        for (int dj = -1 ; dj < 2 ; ++dj)
+        {
+            if (di != 0 || dj != 0)
+            {
+                int jndex;
+                if (j+dj >= _width)
+                    jndex = 0;
+                else if (j+dj < 0)
+                    jndex = _width-1;
+                else
+                    jndex = j+dj;
+
+                result += (_matrix.at(index).at(jndex).is_alive() ? 1 : 0);
+            }
+        }
+    }
+
+    return result;
+}

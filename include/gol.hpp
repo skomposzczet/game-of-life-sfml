@@ -25,6 +25,8 @@ public:
         return (_selecting == selection::none ? false : true);
     }
 
+    void evolve();
+
 private:
     const int _height;
     const int _width;
@@ -33,6 +35,10 @@ private:
     selection _selecting = selection::none;
     sf::Vector2i _begin{-1,-1};
     sf::Vector2i _end{-1,-1};
+
+    Cell get_cell(const int i, const int j) const;
+
+    int count_neighbours(const int i, const int j) const;
 };
 
 #endif // GOL_H

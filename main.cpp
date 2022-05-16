@@ -25,6 +25,8 @@ int main()
             {
                 if (event.key.code == sf::Keyboard::Escape)
                     window.close();
+                else if (event.key.code == sf::Keyboard::Enter)
+                    gol.evolve();
             }
             else if(event.type == sf::Event::MouseButtonPressed)
             {

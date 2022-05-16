@@ -1,9 +1,14 @@
 #include "cell.hpp"
 
-Cell::Cell(const int i, const int j)
+Cell::Cell(const int i, const int j, bool alive)
+    :_alive{alive}
 {
     _rect.setSize(sf::Vector2f(static_cast<float>(Cell::isize), static_cast<float>(Cell::isize)));
-    _rect.setFillColor(sf::Color::White);
+    if (_alive)
+        _rect.setFillColor(sf::Color::Green);
+    else
+        _rect.setFillColor(sf::Color::White);
+
     _rect.setOutlineColor(sf::Color::Black);
     _rect.setOutlineThickness(1.f);
 

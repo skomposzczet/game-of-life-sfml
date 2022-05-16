@@ -10,7 +10,7 @@ class Cell: public sf::Drawable
 public:
     enum {size = 15, isize = 14, bsize = 1};
 
-    Cell(const int i, const int j);
+    Cell(const int i, const int j, bool alive = false);
 
     void draw(sf::RenderTarget& target, sf::RenderStates states) const override
     {
@@ -23,9 +23,19 @@ public:
 
     void apply();
 
+    bool is_alive() const
+    {
+        return _alive;
+    }
+
+    bool is_dead() const
+    {
+        return !_alive;
+    }
+
 private:
     sf::RectangleShape _rect;
-    bool _alive = false;
+    bool _alive;
 
     selection _selected = selection::none;
 
