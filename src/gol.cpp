@@ -63,7 +63,7 @@ void GameOfLife::move_mouse(const int x, const int y)
                 _matrix.at(i).at(j).deselect();
 }
 
-void GameOfLife::evolve()
+bool GameOfLife::evolve()
 {
     std::vector<std::vector<Cell>> nm;
     nm.reserve(_height);
@@ -79,7 +79,14 @@ void GameOfLife::evolve()
         nm.push_back(temp);
     }
 
+    if (_matrix == nm)
+        return true;
+
     _matrix.swap(nm);
+    if (anyone_left())
+        return true;
+
+    return false;
 }
 
 Cell GameOfLife::get_cell(const int i, const int j) const
@@ -126,4 +133,14 @@ int GameOfLife::count_neighbours(const int i, const int j) const
     }
 
     return result;
+}
+
+bool GameOfLife::anyone_left() const
+{
+    for (unsigned i = 0 ; i < _height ; ++i)
+        for (unsigned j = 0 ; j < _width ; ++j)
+            if (_matrix.at(i).at(j).is_alive())
+                return true;
+
+    return false;
 }

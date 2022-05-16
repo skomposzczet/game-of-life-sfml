@@ -25,7 +25,9 @@ public:
         return (_selecting == selection::none ? false : true);
     }
 
-    void evolve();
+    bool evolve();
+
+    bool anyone_left() const;
 
 private:
     const int _height;
