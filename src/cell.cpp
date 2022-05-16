@@ -45,9 +45,6 @@ void Cell::apply()
             _rect.setFillColor(sf::Color::Green);
         }
         else if (_selected == selection::kill)
-        {
-            _alive = false;
-            _rect.setFillColor(sf::Color::White);
-        }
+            kill();
     }
 }

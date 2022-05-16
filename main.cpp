@@ -51,6 +51,11 @@ int main()
                     interval /= 2;
                 else if (event.key.code == sf::Keyboard::LBracket)
                     interval *= 2;
+                else if (event.key.code == sf::Keyboard::R)
+                {
+                    running = false;
+                    gol.clear();
+                }
             }
             else if(event.type == sf::Event::MouseButtonPressed)
             {

@@ -38,6 +38,12 @@ public:
         return !_alive;
     }
 
+    void kill()
+    {
+        _alive = false; 
+        _rect.setFillColor(sf::Color::White);
+    }
+
 private:
     sf::RectangleShape _rect;
     bool _alive;

@@ -144,3 +144,10 @@ bool GameOfLife::anyone_left() const
 
     return false;
 }
+
+void GameOfLife::clear()
+{
+    for (unsigned i = 0 ; i < _height ; ++i)
+        for (unsigned j = 0 ; j < _width ; ++j)
+            _matrix.at(i).at(j).kill();
+}

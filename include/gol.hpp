@@ -29,6 +29,8 @@ public:
 
     bool anyone_left() const;
 
+    void clear();
+
 private:
     const int _height;
     const int _width;
