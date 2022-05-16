@@ -67,6 +67,10 @@ int main()
                     running = false;
                     gol.clear();
                 }
+
+                // export to file
+                else if (event.key.code == sf::Keyboard::E)
+                    gol.export_layout();
             }
             
             /// start selecting

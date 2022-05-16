@@ -151,3 +151,16 @@ void GameOfLife::clear()
         for (unsigned j = 0 ; j < _width ; ++j)
             _matrix.at(i).at(j).kill();
 }
+
+void GameOfLife::export_layout() const
+{
+    std::filesystem::path cwd = std::filesystem::current_path() / "out.txt";
+    std::ofstream file(cwd.string());
+    if (file.is_open())
+    {
+        for (unsigned i = 0 ; i < _height ; ++i)
+            for (unsigned j = 0 ; j < _width ; ++j)
+                if (_matrix.at(i).at(j).is_alive())
+                    file << i << ' ' << j << "\n";
+    }
+}

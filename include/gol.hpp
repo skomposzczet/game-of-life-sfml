@@ -3,6 +3,8 @@
 
 #include <SFML/Graphics.hpp>
 #include <vector>
+#include <filesystem>
+#include <fstream>
 #include <iostream> // debug
 
 #include "cell.hpp"
@@ -67,6 +69,11 @@ public:
      * @brief Resets game, kills all Cells
      */
     void clear();
+
+    /**
+     * @brief Exports grid layout to file
+     */
+    void export_layout() const;
 
 private:
     const int _height;
