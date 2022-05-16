@@ -7,11 +7,14 @@
 class Cell: sf::Drawable
 {
 public:
-    Cell()
+    Cell(const int i, const int j)
     {
         _rect.setFillColor(sf::Color::White);
         _rect.setOutlineColor(sf::Color::Black);
         _rect.setOutlineThickness(1.f);
+
+        auto position = get_position(i, j);
+        _rect.setPosition(position.x, position.y);
     }
     enum {size = 15, isize = 14, bsize = 1};
 
@@ -21,6 +24,11 @@ public:
 private:
     sf::RectangleShape _rect;
     bool alive = false;
+
+    static sf::Vector2i get_position(const int i, const int j)
+    {
+        return sf::Vector2i(j * Cell::size, i * Cell::size);
+    }
 };
 
 class GameOfLife: public sf::Drawable
@@ -38,7 +46,7 @@ public:
             temp.reserve(_width);
 
             for (unsigned j = 0 ; j < _width ; ++j)
-                temp.emplace_back(Cell());
+                temp.emplace_back(Cell(i, j));
 
             _matrix.push_back(temp);
         }
