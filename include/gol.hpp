@@ -25,9 +25,35 @@ public:
         target.draw(_rect);
     }
 
+    void select()
+    {
+        _selected = true;
+        _rect.setFillColor(sf::Color::Blue);
+    }
+
+    void deselect()
+    {
+        if (_selected)
+        {
+            _selected = false;
+            _rect.setFillColor((alive ? sf::Color::Green : sf::Color::White));
+        }
+    }
+
+    void apply()
+    {
+        if (_selected)
+        {
+            alive = true;
+            _rect.setFillColor(sf::Color::Green);
+        }
+    }
+
 private:
     sf::RectangleShape _rect;
     bool alive = false;
+
+    bool _selected = false;
 
     static sf::Vector2i get_position(const int i, const int j)
     {
@@ -65,15 +91,18 @@ public:
 
     void press(const int x, const int y)
     {
-        std::cout << "pressed\n";
         _pressed = true;
         _begin.x = _end.x = x / Cell::size;
         _begin.y = _end.y = y / Cell::size;
+        _matrix.at(_begin.y).at(_begin.x).select();
     }
 
     void unpress()
     {
-        std::cout << _begin.x << ", " << _begin.y << "\t" << _end.x << ", " << _end.y << "\n";
+        for (unsigned i = 0 ; i < _height ; ++i)
+            for (unsigned j = 0 ; j < _width ; ++j)
+                _matrix.at(i).at(j).apply();
+
         _pressed = false;
         _begin.x = _end.x = -1;
         _begin.y = _end.y = -1;
@@ -88,6 +117,13 @@ public:
     {
         _end.x = x / Cell::size;
         _end.y = y / Cell::size;
+
+        for (unsigned i = 0 ; i < _height ; ++i)
+            for (unsigned j = 0 ; j < _width ; ++j)
+                if (((i >= _begin.y && i <= _end.y) || (i <= _begin.y && i >= _end.y)) && ((j >= _begin.x && j <= _end.x) || (j <= _begin.x && j >= _end.x)))
+                    _matrix.at(i).at(j).select();
+                else
+                    _matrix.at(i).at(j).deselect();
     }
 
 private:
