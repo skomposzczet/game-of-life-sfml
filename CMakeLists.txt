@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.1.0)
-project (main)
+project (gameoflife)
 
 set(CMAKE_DISABLE_IN_SOURCE_BUILD ON)
 set(CMAKE_DISABLE_SOURCE_CHANGES  ON)
@@ -33,4 +33,4 @@ target_link_libraries(${PROJECT_NAME} Map
 add_custom_target(run ./${PROJECT_NAME})
 
 install(TARGETS ${PROJECT_NAME} DESTINATION games)
-install(DIRECTORY presets DESTINATION $ENV{HOME}/.game_of_life PATTEN "presets/*")
+install(DIRECTORY presets DESTINATION $ENV{HOME}/.game_of_life PATTERN "presets/*")
