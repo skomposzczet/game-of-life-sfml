@@ -78,8 +78,11 @@ public:
 
     /**
      * @brief Import grid layout from file
+     * 
+     * @param filename Name of preset or abosulute (or relative to current working directory) path to file
+     * @returns true if file could be loaded, false if failed
      */
-    bool import_layout(const std::string filename);
+    bool import_layout(std::string filename);
 
 private:
     const int _height;
@@ -89,6 +92,8 @@ private:
     selection _selecting = selection::none;
     sf::Vector2i _begin{-1,-1};
     sf::Vector2i _end{-1,-1};
+
+    static const std::vector<std::string> presets;
 
     /**
      * @brief Determines whether Cell should be alive or dead in next iteration

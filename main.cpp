@@ -27,11 +27,10 @@ int main(int argc, char *argv[])
     clock_t last_time;
 
     GameOfLife gol(1290, 900);
+    
     if(argc > 1)
-    {
-        gol.import_layout(static_cast<std::string>(argv[1]));
-        start(running, this_time, last_time);
-    }
+        if (gol.import_layout(static_cast<std::string>(argv[1])));
+            start(running, this_time, last_time);
 
     while (window.isOpen())
     {

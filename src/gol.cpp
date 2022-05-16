@@ -1,5 +1,7 @@
 #include "gol.hpp"
 
+const std::vector<std::string> GameOfLife::presets{"gun"};
+
 GameOfLife::GameOfLife(const int x, const int y)
     : _width{x/Cell::size}, _height{y/Cell::size}
 {
@@ -165,10 +167,21 @@ void GameOfLife::export_layout() const
     }
 }
 
-bool GameOfLife::import_layout(const std::string filename)
+bool GameOfLife::import_layout(std::string filename)
 {
-    std::filesystem::path filepath = filename;
+    std::filesystem::path filepath;
     std::ifstream file;
+
+    for (auto& preset : presets)
+    {
+        if (preset == filename)
+        {
+            filename = getenv("HOME") + std::string{"/.game_of_life/presets/"} + filename;
+            break;
+        }
+    }
+
+    filepath = filename;
     file.open(filepath.string());
     if (!file.is_open())
     {
