@@ -8,7 +8,7 @@ Simple one-day sfml project.
 
 Periodic boundary conditions are used, which means that that grid is surrounded by translated copies of itself (for example first cell in nth row is considered to be adjacent do last cell in the same row). Diagonal adjacency is also considered a neighbourhood.
 ## Options:
-During game you can use and select area:
+During game you can select area:
 * with left mouse button and populate selected cells,
 * with right mouse button and kill selected cells,
 
