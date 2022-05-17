@@ -1,6 +1,6 @@
 #include "gol.hpp"
 
-const std::vector<std::string> GameOfLife::presets{"gun"};
+const std::vector<std::string> GameOfLife::presets{"gun", "hivenudger", "hivenudger2"};
 
 GameOfLife::GameOfLife(const int x, const int y)
     : _width{x/Cell::size}, _height{y/Cell::size}
